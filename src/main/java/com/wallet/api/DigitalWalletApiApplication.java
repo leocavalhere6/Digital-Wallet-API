@@ -8,6 +8,7 @@ public class DigitalWalletApiApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(DigitalWalletApiApplication.class, args);
+		
 	}
 
 }
