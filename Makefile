@@ -1,8 +1,5 @@
-.PHONY: dev test build clean docker-up docker-down docker-logs docker-rebuild
+.PHONY: dev test build clean db db-down docker-up docker-down docker-logs docker-rebuild
 
-# ==========================================
-# Java & Maven Commands
-# ==========================================
 dev:
 	./mvnw spring-boot:run
 
@@ -15,9 +12,14 @@ build:
 clean:
 	./mvnw clean
 
-# ==========================================
-# Docker Lifecycle Commands
-# ==========================================
+# Local DB infrastructure target
+db:
+	docker compose up -d postgres
+
+db-down:
+	docker compose stop postgres
+
+# Full containerized stack targets
 docker-up:
 	docker compose up -d
 
