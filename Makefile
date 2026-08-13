@@ -1,17 +1,31 @@
-.PHONY: dev test build clean
+.PHONY: dev test build clean docker-up docker-down docker-logs docker-rebuild
 
-# Roda a aplicação Spring Boot em modo desenvolvimento
+# ==========================================
+# Java & Maven Commands
+# ==========================================
 dev:
 	./mvnw spring-boot:run
 
-# Roda todos os testes unitários e de integração
 test:
 	./mvnw test
 
-# Compila o JAR da aplicação (pulando testes se quiser rapidez)
 build:
 	./mvnw clean package -DskipTests
 
-# Limpa a pasta /target
 clean:
 	./mvnw clean
+
+# ==========================================
+# Docker Lifecycle Commands
+# ==========================================
+docker-up:
+	docker compose up -d
+
+docker-down:
+	docker compose down
+
+docker-logs:
+	docker compose logs -f
+
+docker-rebuild:
+	docker compose down && docker compose up -d --build
