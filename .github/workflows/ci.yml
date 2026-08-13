@@ -2,7 +2,7 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [main, feature/*]
+    branches: [main]
   pull_request:
     branches: [main]
 
@@ -36,4 +36,8 @@ jobs:
           cache: maven
 
       - name: Build and Test with Maven
+        env:
+          SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/walletdb
+          SPRING_DATASOURCE_USERNAME: walletuser
+          SPRING_DATASOURCE_PASSWORD: walletpassword
         run: ./mvnw test
