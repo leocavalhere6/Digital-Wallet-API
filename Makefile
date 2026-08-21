@@ -1,6 +1,7 @@
 .PHONY: dev test format format-check build clean db db-down docker-up docker-down docker-logs docker-rebuild
 
-dev:
+# Inicia o DB e sobe o Spring Boot
+dev: db
 	./mvnw spring-boot:run
 
 format:
@@ -9,7 +10,8 @@ format:
 format-check:
 	./mvnw spotless:check
 
-test:
+# Inicia o DB, aplica formatacao e roda os testes
+test: db
 	./mvnw spotless:apply && ./mvnw clean test
 
 build:
