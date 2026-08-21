@@ -1,13 +1,19 @@
-.PHONY: dev test build clean db db-down docker-up docker-down docker-logs docker-rebuild
+.PHONY: dev test format format-check build clean db db-down docker-up docker-down docker-logs docker-rebuild
 
 dev:
 	./mvnw spring-boot:run
 
+format:
+	./mvnw spotless:apply
+
+format-check:
+	./mvnw spotless:check
+
 test:
-	./mvnw test
+	./mvnw spotless:apply && ./mvnw clean test
 
 build:
-	./mvnw clean package -DskipTests
+	./mvnw spotless:apply && ./mvnw clean package -DskipTests
 
 clean:
 	./mvnw clean
