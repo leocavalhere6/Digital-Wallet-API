@@ -21,7 +21,8 @@ class JwtServiceTest {
     void setUp() {
         jwtService = new JwtService();
         ReflectionTestUtils.setField(jwtService, "secretKey", secretKey);
-        ReflectionTestUtils.setField(jwtService, "jwtExpiration", 86400000L);
+        // Ajustado de 'jwtExpiration' para 'expiration' (ou 'jwtExpirationMs')
+        ReflectionTestUtils.setField(jwtService, "expirationMs", 86400000L);
         userDetails = new User("user@example.com", "password", Collections.emptyList());
     }
 
