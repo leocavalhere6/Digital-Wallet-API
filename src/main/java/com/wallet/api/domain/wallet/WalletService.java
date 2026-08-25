@@ -5,6 +5,7 @@ import com.wallet.api.domain.wallet.dto.WalletResponse;
 import com.wallet.api.exception.CpfCnpjAlreadyExistsException;
 import com.wallet.api.exception.EmailAlreadyExistsException;
 import com.wallet.api.exception.WalletNotFoundException;
+import java.math.BigDecimal;
 import java.util.UUID;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,10 +42,20 @@ public class WalletService {
         return WalletResponse.fromEntity(savedWallet);
     }
 
+    public BigDecimal getBalance(UUID walletId) {
+        Wallet wallet =
+                walletRepository
+                        .findById(walletId)
+                        .orElseThrow(() -> new WalletNotFoundException("Wallet not found"));
+        return wallet.getBalance();
+    }
+
     @Transactional(readOnly = true)
     public WalletResponse findWalletById(UUID id) {
         Wallet wallet =
-                walletRepository.findById(id).orElseThrow(() -> new WalletNotFoundException(id));
+                walletRepository
+                        .findById(id)
+                        .orElseThrow(() -> new WalletNotFoundException("Wallet not found: " + id));
         return WalletResponse.fromEntity(wallet);
     }
 }
