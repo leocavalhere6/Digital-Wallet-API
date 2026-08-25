@@ -54,7 +54,7 @@ class TransferServiceTest {
         when(walletRepository.findById(payerId)).thenReturn(Optional.of(payer));
         when(walletRepository.findById(payeeId)).thenReturn(Optional.of(payee));
 
-        TransferRequest request = new TransferRequest(BigDecimal.valueOf(100), payerId, payeeId);
+        TransferRequest request = new TransferRequest(payerId, payeeId, BigDecimal.valueOf(100));
         TransferResponse response = transferService.transfer(request);
 
         assertThat(response).isNotNull();
@@ -88,7 +88,7 @@ class TransferServiceTest {
         when(walletRepository.findById(payerId)).thenReturn(Optional.of(merchantPayer));
         when(walletRepository.findById(payeeId)).thenReturn(Optional.of(payee));
 
-        TransferRequest request = new TransferRequest(BigDecimal.valueOf(100), payerId, payeeId);
+        TransferRequest request = new TransferRequest(payerId, payeeId, BigDecimal.valueOf(100));
 
         assertThatThrownBy(() -> transferService.transfer(request))
                 .isInstanceOf(TransferNotAllowedException.class)
@@ -121,7 +121,7 @@ class TransferServiceTest {
         when(walletRepository.findById(payerId)).thenReturn(Optional.of(payer));
         when(walletRepository.findById(payeeId)).thenReturn(Optional.of(payee));
 
-        TransferRequest request = new TransferRequest(BigDecimal.valueOf(100), payerId, payeeId);
+        TransferRequest request = new TransferRequest(payerId, payeeId, BigDecimal.valueOf(100));
 
         assertThatThrownBy(() -> transferService.transfer(request))
                 .isInstanceOf(InsufficientBalanceException.class);

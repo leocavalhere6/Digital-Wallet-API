@@ -35,8 +35,8 @@ class WalletServiceTest {
                         "12345678900",
                         "maria@email.com",
                         "pass123",
-                        BigDecimal.valueOf(100),
-                        WalletType.USER);
+                        WalletType.USER,
+                        BigDecimal.valueOf(100));
 
         Wallet wallet =
                 new Wallet(
@@ -66,8 +66,8 @@ class WalletServiceTest {
                         "12345678900",
                         "maria@email.com",
                         "pass123",
-                        BigDecimal.valueOf(100),
-                        WalletType.USER);
+                        WalletType.USER,
+                        BigDecimal.valueOf(100));
 
         when(walletRepository.existsByCpfCnpj(request.cpfCnpj())).thenReturn(true);
 

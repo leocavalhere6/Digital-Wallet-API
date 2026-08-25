@@ -19,8 +19,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(WalletController.class)
@@ -31,9 +31,9 @@ class WalletControllerTest {
 
     @Autowired private ObjectMapper objectMapper;
 
-    @MockBean private WalletService walletService;
+    @MockitoBean private WalletService walletService;
 
-    @MockBean private JwtService jwtService;
+    @MockitoBean private JwtService jwtService;
 
     @Test
     @DisplayName("Deve criar uma carteira com sucesso e retornar status 201")
@@ -45,8 +45,8 @@ class WalletControllerTest {
                         "12345678901",
                         "joao@email.com",
                         "senha123",
-                        new BigDecimal("100.00"),
-                        WalletType.USER);
+                        WalletType.USER,
+                        new BigDecimal("100.00"));
 
         WalletResponse response =
                 new WalletResponse(
