@@ -12,8 +12,10 @@ public class AuthorizerClient {
     private final String authorizerUrl;
 
     public AuthorizerClient(
-            RestClient restClient, @Value("${client.authorizer.url}") String authorizerUrl) {
-        this.restClient = restClient;
+            RestClient.Builder builder,
+            @Value("${client.authorizer.url:https://util.devi.tools/api/v2/authorize}")
+                    String authorizerUrl) {
+        this.restClient = builder.build();
         this.authorizerUrl = authorizerUrl;
     }
 

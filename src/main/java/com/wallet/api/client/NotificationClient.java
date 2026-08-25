@@ -16,8 +16,10 @@ public class NotificationClient {
     private final String notificationUrl;
 
     public NotificationClient(
-            RestClient restClient, @Value("${client.notification.url}") String notificationUrl) {
-        this.restClient = restClient;
+            RestClient.Builder builder,
+            @Value("${client.notification.url:https://util.devi.tools/api/v1/notify}")
+                    String notificationUrl) {
+        this.restClient = builder.build();
         this.notificationUrl = notificationUrl;
     }
 
