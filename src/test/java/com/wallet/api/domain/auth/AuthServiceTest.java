@@ -5,8 +5,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.wallet.api.domain.auth.dto.AuthResponse;
 import com.wallet.api.domain.auth.dto.LoginRequest;
-import com.wallet.api.domain.auth.dto.LoginResponse;
 import com.wallet.api.infra.security.JwtService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,15 +15,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @ExtendWith(MockitoExtension.class)
 class AuthServiceTest {
 
     @Mock private AuthenticationManager authenticationManager;
-
     @Mock private JwtService jwtService;
-
     @InjectMocks private AuthService authService;
 
     @Test
@@ -32,12 +30,12 @@ class AuthServiceTest {
         LoginRequest request = new LoginRequest("test@wallet.com", "password123");
         String expectedToken = "mocked-jwt-token";
 
-        when(jwtService.generateToken(request.email())).thenReturn(expectedToken);
+        when(jwtService.generateToken(any(UserDetails.class))).thenReturn(expectedToken);
 
-        LoginResponse response = authService.login(request);
+        AuthResponse response = authService.authenticate(request);
 
         assertThat(response).isNotNull();
         assertThat(response.token()).isEqualTo(expectedToken);
-        verify(authenticationManager).authenticate(any(UsernamePasswordAuthenticationToken.class));
+        verify(authenticationManager).authenticate(any());
     }
 }

@@ -4,7 +4,6 @@ import static org.springframework.test.web.client.match.MockRestRequestMatchers.
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
-import com.wallet.api.client.dto.NotificationRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,6 @@ import org.springframework.test.web.client.MockRestServiceServer;
 class NotificationClientTest {
 
     @Autowired private NotificationClient notificationClient;
-
     @Autowired private MockRestServiceServer server;
 
     @Test
@@ -27,10 +25,7 @@ class NotificationClientTest {
                 .andExpect(method(HttpMethod.POST))
                 .andRespond(withSuccess());
 
-        NotificationRequest request =
-                new NotificationRequest("user@example.com", "Você recebeu uma transferência.");
-
-        notificationClient.sendNotification(request);
+        notificationClient.sendNotification("user@example.com", "Você recebeu uma transferência.");
 
         this.server.verify();
     }
