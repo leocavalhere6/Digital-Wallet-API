@@ -5,8 +5,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.wallet.api.domain.auth.dto.AuthResponse;
 import com.wallet.api.domain.auth.dto.LoginRequest;
+import com.wallet.api.domain.auth.dto.LoginResponse;
 import com.wallet.api.infra.security.JwtService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,14 +25,14 @@ class AuthServiceTest {
     @InjectMocks private AuthService authService;
 
     @Test
-    @DisplayName("Deve autenticar o usuário e retornar o token JWT")
-    void shouldAuthenticateAndReturnToken() {
+    @DisplayName("Should authenticate user and return JWT token successfully")
+    void shouldAuthenticateUserAndReturnJwtToken() {
         LoginRequest request = new LoginRequest("test@wallet.com", "password123");
         String expectedToken = "mocked-jwt-token";
 
         when(jwtService.generateToken(any(UserDetails.class))).thenReturn(expectedToken);
 
-        AuthResponse response = authService.authenticate(request);
+        LoginResponse response = authService.authenticate(request);
 
         assertThat(response).isNotNull();
         assertThat(response.token()).isEqualTo(expectedToken);

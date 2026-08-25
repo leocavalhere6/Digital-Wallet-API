@@ -18,8 +18,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(TransferController.class)
@@ -30,9 +30,9 @@ class TransferControllerTest {
 
     @Autowired private ObjectMapper objectMapper;
 
-    @MockBean private TransferService transferService;
+    @MockitoBean private TransferService transferService;
 
-    @MockBean private JwtService jwtService;
+    @MockitoBean private JwtService jwtService;
 
     @Test
     @DisplayName(
@@ -42,7 +42,7 @@ class TransferControllerTest {
         UUID payeeId = UUID.randomUUID();
         BigDecimal value = new BigDecimal("150.00");
 
-        TransferRequest request = new TransferRequest(value, payerId, payeeId);
+        TransferRequest request = new TransferRequest(payerId, payeeId, value);
         TransferResponse response =
                 new TransferResponse(value, payerId, payeeId, LocalDateTime.now());
 
