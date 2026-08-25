@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -13,46 +14,64 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(WalletNotFoundException.class)
-    public ProblemDetail handleWalletNotFound(WalletNotFoundException ex) {
-        ProblemDetail problem =
+    public ProblemDetail handleWalletNotFoundException(WalletNotFoundException ex) {
+        ProblemDetail problemDetail =
                 ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
-        problem.setTitle("Resource Not Found");
-        problem.setType(URI.create("https://api.wallet.com/errors/not-found"));
-        return problem;
+        problemDetail.setTitle("Wallet Not Found");
+        problemDetail.setType(URI.create("https://api.wallet.com/errors/not-found"));
+        return problemDetail;
+    }
+
+    @ExceptionHandler(InsufficientBalanceException.class)
+    public ProblemDetail handleInsufficientBalanceException(InsufficientBalanceException ex) {
+        ProblemDetail problemDetail =
+                ProblemDetail.forStatusAndDetail(HttpStatus.UNPROCESSABLE_ENTITY, ex.getMessage());
+        problemDetail.setTitle("Insufficient Balance");
+        problemDetail.setType(URI.create("https://api.wallet.com/errors/insufficient-balance"));
+        return problemDetail;
+    }
+
+    @ExceptionHandler(TransferNotAllowedException.class)
+    public ProblemDetail handleTransferNotAllowedException(TransferNotAllowedException ex) {
+        ProblemDetail problemDetail =
+                ProblemDetail.forStatusAndDetail(HttpStatus.UNPROCESSABLE_ENTITY, ex.getMessage());
+        problemDetail.setTitle("Transfer Not Allowed");
+        problemDetail.setType(URI.create("https://api.wallet.com/errors/transfer-not-allowed"));
+        return problemDetail;
     }
 
     @ExceptionHandler({CpfCnpjAlreadyExistsException.class, EmailAlreadyExistsException.class})
-    public ProblemDetail handleConflict(RuntimeException ex) {
-        ProblemDetail problem =
+    public ProblemDetail handleConflictException(RuntimeException ex) {
+        ProblemDetail problemDetail =
                 ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.getMessage());
-        problem.setTitle("Data Conflict");
-        problem.setType(URI.create("https://api.wallet.com/errors/conflict"));
-        return problem;
-    }
-
-    @ExceptionHandler({InsufficientBalanceException.class, TransferNotAllowedException.class})
-    public ProblemDetail handleUnprocessableEntity(RuntimeException ex) {
-        ProblemDetail problem =
-                ProblemDetail.forStatusAndDetail(HttpStatus.UNPROCESSABLE_ENTITY, ex.getMessage());
-        problem.setTitle("Business Rule Violation");
-        problem.setType(URI.create("https://api.wallet.com/errors/business-rule"));
-        return problem;
+        problemDetail.setTitle("Resource Conflict");
+        problemDetail.setType(URI.create("https://api.wallet.com/errors/conflict"));
+        return problemDetail;
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ProblemDetail handleValidationErrors(MethodArgumentNotValidException ex) {
-        ProblemDetail problem =
+    public ProblemDetail handleValidationException(MethodArgumentNotValidException ex) {
+        ProblemDetail problemDetail =
+                ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "Invalid request payload");
+        problemDetail.setTitle("Validation Error");
+        problemDetail.setType(URI.create("https://api.wallet.com/errors/validation-error"));
+
+        Map<String, String> invalidFields = new HashMap<>();
+        for (FieldError error : ex.getBindingResult().getFieldErrors()) {
+            invalidFields.put(error.getField(), error.getDefaultMessage());
+        }
+        problemDetail.setProperty("invalidFields", invalidFields);
+
+        return problemDetail;
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ProblemDetail handleGeneralException(Exception ex) {
+        ProblemDetail problemDetail =
                 ProblemDetail.forStatusAndDetail(
-                        HttpStatus.BAD_REQUEST, "Invalid request parameters");
-        problem.setTitle("Validation Error");
-        problem.setType(URI.create("https://api.wallet.com/errors/bad-request"));
-
-        Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult()
-                .getFieldErrors()
-                .forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
-        problem.setProperty("invalidFields", errors);
-
-        return problem;
+                        HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred");
+        problemDetail.setTitle("Internal Server Error");
+        problemDetail.setType(URI.create("https://api.wallet.com/errors/internal-error"));
+        return problemDetail;
     }
 }
