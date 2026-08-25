@@ -18,15 +18,14 @@ public class NotificationClient {
     public NotificationClient(
             RestClient.Builder builder,
             @Value("${client.notification.url:https://util.devi.tools/api/v1/notify}")
-                    String notificationUrl) {
+            String notificationUrl) {
         this.restClient = builder.build();
         this.notificationUrl = notificationUrl;
     }
 
     public void sendNotification(String email, String message) {
         try {
-            restClient
-                    .post()
+            restClient.post()
                     .uri(notificationUrl)
                     .body(new NotificationRequest(email, message))
                     .retrieve()

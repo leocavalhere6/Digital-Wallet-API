@@ -14,15 +14,17 @@ public class AuthorizerClient {
     public AuthorizerClient(
             RestClient.Builder builder,
             @Value("${client.authorizer.url:https://util.devi.tools/api/v2/authorize}")
-                    String authorizerUrl) {
+            String authorizerUrl) {
         this.restClient = builder.build();
         this.authorizerUrl = authorizerUrl;
     }
 
     public boolean isAuthorized() {
         try {
-            AuthorizerResponse response =
-                    restClient.get().uri(authorizerUrl).retrieve().body(AuthorizerResponse.class);
+            AuthorizerResponse response = restClient.get()
+                    .uri(authorizerUrl)
+                    .retrieve()
+                    .body(AuthorizerResponse.class);
 
             return response != null && response.isAuthorized();
         } catch (Exception e) {
