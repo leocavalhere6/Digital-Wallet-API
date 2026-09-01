@@ -1,11 +1,10 @@
 spring:
   datasource:
-    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=PostgreSQL
+    url: jdbc:h2:mem:testdb;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
     driver-class-name: org.h2.Driver
     username: sa
     password:
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
       ddl-auto: create-drop
     show-sql: false
@@ -15,7 +14,7 @@ spring:
 api:
   security:
     jwt:
-      secret: c3VwZXItc2VjcmV0LWtleS1mb3Itand0LXRlc3RzLW11c3QtYmUtbG9uZy1lbm91Z2g=
+      secret: secret-key-for-unit-and-integration-tests-123456
       expiration: 86400000
   client:
     authorizer:

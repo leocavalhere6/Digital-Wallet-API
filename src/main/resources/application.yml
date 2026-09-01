@@ -2,24 +2,24 @@ spring:
   application:
     name: digital-wallet-api
   datasource:
-    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-    driver-class-name: org.h2.Driver
-    username: sa
-    password:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/wallet_db}
+    driver-class-name: ${DB_DRIVER:org.postgresql.Driver}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: validate
     show-sql: false
   flyway:
-    enabled: false
+    enabled: true
 
 api:
   security:
     jwt:
-      secret: c3VwZXItc2VjcmV0LWtleS1mb3Itand0LXRlc3RzLW11c3QtYmUtbG9uZy1lbm91Z2g=
-      expiration: 86400000
+      secret: ${JWT_SECRET:chave-secreta-padrao-desenvolvimento-local-123456}
+      expiration: ${JWT_EXPIRATION:86400000}
   client:
     authorizer:
-      url: https://util.devi.tools/api/v2/authorize
+      url: ${AUTHORIZER_URL:https://util.devi.tools/api/v2/authorize}
     notification:
-      url: https://util.devi.tools/api/v1/notify
+      url: ${NOTIFICATION_URL:https://util.devi.tools/api/v1/notify}
