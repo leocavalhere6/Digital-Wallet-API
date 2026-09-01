@@ -64,6 +64,23 @@ public class Wallet {
         this.walletType = walletType;
     }
 
+    public boolean canTransfer() {
+        return this.walletType != WalletType.MERCHANT;
+    }
+
+    public boolean hasBalanceFor(BigDecimal amount) {
+        return this.balance != null && this.balance.compareTo(amount) >= 0;
+    }
+
+    public void debit(BigDecimal amount) {
+        this.balance = this.balance.subtract(amount);
+    }
+
+    public void credit(BigDecimal amount) {
+        this.balance = this.balance.add(amount);
+    }
+
+    // Getters e Setters
     public UUID getId() {
         return id;
     }

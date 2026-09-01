@@ -1,0 +1,23 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: false
+  flyway:
+    enabled: false
+
+api:
+  security:
+    jwt:
+      secret: secret-key-for-unit-and-integration-tests-123456
+      expiration: 86400000
+  client:
+    authorizer:
+      url: https://util.devi.tools/api/v2/authorize
+    notification:
+      url: https://util.devi.tools/api/v1/notify

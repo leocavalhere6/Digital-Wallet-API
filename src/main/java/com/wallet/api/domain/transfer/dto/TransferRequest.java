@@ -6,4 +6,8 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 public record TransferRequest(
-        @NotNull @Positive BigDecimal value, @NotNull UUID payer, @NotNull UUID payee) {}
+        @NotNull(message = "Payer ID is required") UUID payerId,
+        @NotNull(message = "Payee ID is required") UUID payeeId,
+        @NotNull(message = "Value is required")
+                @Positive(message = "Transfer value must be greater than zero")
+                BigDecimal value) {}

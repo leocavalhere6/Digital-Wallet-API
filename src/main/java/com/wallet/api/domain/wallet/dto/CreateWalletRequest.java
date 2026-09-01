@@ -8,9 +8,12 @@ import jakarta.validation.constraints.PositiveOrZero;
 import java.math.BigDecimal;
 
 public record CreateWalletRequest(
-        @NotBlank String fullName,
-        @NotBlank String cpfCnpj,
-        @NotBlank @Email String email,
-        @NotBlank String password,
-        @NotNull @PositiveOrZero BigDecimal balance,
-        @NotNull WalletType walletType) {}
+        @NotBlank(message = "FullName is required") String fullName,
+        @NotBlank(message = "CpfCnpj is required") String cpfCnpj,
+        @NotBlank(message = "Email is required") @Email(message = "Invalid email format")
+                String email,
+        @NotBlank(message = "Password is required") String password,
+        @NotNull(message = "WalletType is required") WalletType walletType,
+        @NotNull(message = "Initial balance is required")
+                @PositiveOrZero(message = "Initial balance cannot be negative")
+                BigDecimal balance) {}

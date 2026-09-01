@@ -2,8 +2,12 @@ package com.wallet.api.domain.transfer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
+import com.wallet.api.client.AuthorizerClient;
+import com.wallet.api.client.NotificationClient;
 import com.wallet.api.domain.transfer.dto.TransferRequest;
 import com.wallet.api.domain.transfer.dto.TransferResponse;
 import com.wallet.api.domain.wallet.Wallet;
@@ -25,6 +29,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 class TransferServiceTest {
 
     @Mock private WalletRepository walletRepository;
+    @Mock private AuthorizerClient authorizerClient;
+    @Mock private NotificationClient notificationClient;
 
     @InjectMocks private TransferService transferService;
 
@@ -53,8 +59,10 @@ class TransferServiceTest {
 
         when(walletRepository.findById(payerId)).thenReturn(Optional.of(payer));
         when(walletRepository.findById(payeeId)).thenReturn(Optional.of(payee));
+        when(authorizerClient.isAuthorized()).thenReturn(true);
+        doNothing().when(notificationClient).sendNotification(anyString(), anyString());
 
-        TransferRequest request = new TransferRequest(BigDecimal.valueOf(100), payerId, payeeId);
+        TransferRequest request = new TransferRequest(payerId, payeeId, BigDecimal.valueOf(100));
         TransferResponse response = transferService.transfer(request);
 
         assertThat(response).isNotNull();
@@ -88,11 +96,11 @@ class TransferServiceTest {
         when(walletRepository.findById(payerId)).thenReturn(Optional.of(merchantPayer));
         when(walletRepository.findById(payeeId)).thenReturn(Optional.of(payee));
 
-        TransferRequest request = new TransferRequest(BigDecimal.valueOf(100), payerId, payeeId);
+        TransferRequest request = new TransferRequest(payerId, payeeId, BigDecimal.valueOf(100));
 
         assertThatThrownBy(() -> transferService.transfer(request))
                 .isInstanceOf(TransferNotAllowedException.class)
-                .hasMessage("Merchant wallets cannot send transfers");
+                .hasMessage("Merchant wallets are not allowed to send transfers");
     }
 
     @Test
@@ -121,7 +129,7 @@ class TransferServiceTest {
         when(walletRepository.findById(payerId)).thenReturn(Optional.of(payer));
         when(walletRepository.findById(payeeId)).thenReturn(Optional.of(payee));
 
-        TransferRequest request = new TransferRequest(BigDecimal.valueOf(100), payerId, payeeId);
+        TransferRequest request = new TransferRequest(payerId, payeeId, BigDecimal.valueOf(100));
 
         assertThatThrownBy(() -> transferService.transfer(request))
                 .isInstanceOf(InsufficientBalanceException.class);
