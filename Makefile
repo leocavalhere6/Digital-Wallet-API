@@ -1,6 +1,12 @@
-.PHONY: help dev test coverage coverage-view format format-check build clean db db-down docker-up docker-down docker-logs docker-rebuild
+.PHONY: help dev test coverage coverage-view format format-check build clean db db-down docker-up docker-down docker-logs docker-rebuild docs
 
 .DEFAULT_GOAL := help
+
+docs:
+	@echo "========================================================"
+	@echo " Swagger UI:  http://localhost:8080/swagger-ui/index.html"
+	@echo " OpenAPI Doc: http://localhost:8080/v3/api-docs"
+	@echo "========================================================"
 
 help: ## Display available commands list
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-18s\033[0m %s\n", $$1, $$2}'

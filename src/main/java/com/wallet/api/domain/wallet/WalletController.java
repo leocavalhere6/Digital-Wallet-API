@@ -2,6 +2,7 @@ package com.wallet.api.domain.wallet;
 
 import com.wallet.api.domain.wallet.dto.CreateWalletRequest;
 import com.wallet.api.domain.wallet.dto.WalletResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.math.BigDecimal;
 import java.util.UUID;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/wallets")
+@Tag(name = "Wallets", description = "Endpoints for managing user and merchant wallets")
 public class WalletController {
 
     private final WalletService walletService;
