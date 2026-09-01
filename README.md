@@ -114,6 +114,54 @@ You can verify your Java installation with:
 ```bash
 java -version
 ```
+## 🧪 Test Coverage
+
+The project uses **JaCoCo** to measure automated test coverage across the application.
+
+### Current Coverage
+
+| Metric           | Coverage |
+| ---------------- | -------: |
+| **Instructions** |  **73%** |
+| **Branches**     |  **43%** |
+| **Methods**      |  **82%** |
+| **Classes**      |  **97%** |
+
+The current test suite covers the application's main business domains, including wallet management, transfers, authentication, security, external service clients, repositories, and controllers.
+
+Some of the strongest-covered areas include:
+
+* **Transfer domain:** 87% instruction coverage and 83% branch coverage
+* **Wallet domain:** 85% instruction coverage and 80% branch coverage
+* **Authentication:** 85% instruction coverage
+* **External clients:** 86% instruction coverage
+* **Configuration:** 96% instruction coverage
+
+Coverage is continuously measured using JaCoCo and can be regenerated locally with:
+
+```bash
+make coverage
+```
+
+The generated report is available at:
+
+```text
+target/site/jacoco/index.html
+```
+
+To generate the report and inspect it through a local HTTP server:
+
+```bash
+make coverage-view
+```
+
+Then open:
+
+```text
+http://localhost:8000
+```
+
+> **Note:** Coverage metrics represent the current state of the test suite and may change as the project evolves.
 
 ---
 
