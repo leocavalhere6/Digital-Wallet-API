@@ -6,6 +6,8 @@ import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import io.swagger.v3.oas.models.servers.Server;
+import java.util.List;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,8 +16,6 @@ public class OpenApiConfig {
 
     @Bean
     public OpenAPI customOpenAPI() {
-        final String securitySchemeName = "bearerAuth";
-
         return new OpenAPI()
                 .info(
                         new Info()
@@ -27,13 +27,14 @@ public class OpenApiConfig {
                                         new Contact()
                                                 .name("Leonardo Henrique")
                                                 .email("support@wallet.com")))
-                .addSecurityItem(new SecurityRequirement().addList(securitySchemeName))
+                .servers(List.of(new Server().url("/").description("Default Server")))
+                .addSecurityItem(new SecurityRequirement().addList("bearerAuth"))
                 .components(
                         new Components()
                                 .addSecuritySchemes(
-                                        securitySchemeName,
+                                        "bearerAuth",
                                         new SecurityScheme()
-                                                .name(securitySchemeName)
+                                                .name("bearerAuth")
                                                 .type(SecurityScheme.Type.HTTP)
                                                 .scheme("bearer")
                                                 .bearerFormat("JWT")));

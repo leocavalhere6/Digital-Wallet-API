@@ -2,6 +2,7 @@ package com.wallet.api.domain.transfer;
 
 import com.wallet.api.domain.transfer.dto.TransferRequest;
 import com.wallet.api.domain.transfer.dto.TransferResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/transfers")
+@Tag(name = "Transfers", description = "Endpoints for processing money transfers")
 public class TransferController {
 
     private final TransferService transferService;
