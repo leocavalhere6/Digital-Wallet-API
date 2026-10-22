@@ -1,3 +1,4 @@
+cat << 'EOF' > Makefile
 .PHONY: help dev test coverage coverage-view format format-check build clean db db-down docker-up docker-down docker-logs docker-rebuild docs
 
 .DEFAULT_GOAL := help
@@ -53,3 +54,4 @@ docker-logs: ## Follow unified Docker container logs in real time
 
 docker-rebuild: ## Tear down, rebuild Docker images, and launch stack
 	docker compose down && docker compose up -d --build
+EOF
