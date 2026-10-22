@@ -1,5 +1,4 @@
-cat << 'EOF' > Makefile
-.PHONY: help dev test coverage coverage-view format format-check build clean db db-down docker-up docker-down docker-logs docker-rebuild docs
+.PHONY: help dev test coverage coverage-summary coverage-view format format-check build clean db db-down docker-up docker-down docker-logs docker-rebuild docs
 
 .DEFAULT_GOAL := help
 
@@ -28,6 +27,9 @@ coverage: db ## Run tests and generate JaCoCo report in target/site/jacoco
 	./mvnw clean test jacoco:report
 	@echo "Report generated at: target/site/jacoco/index.html"
 
+coverage-summary: test ## Run tests and print JaCoCo coverage summary directly to terminal
+	@python3 coverage_summary.py
+
 coverage-view: coverage ## Run tests and launch local HTTP server on port 8000 to inspect JaCoCo report
 	python3 -m http.server 8000 --directory target/site/jacoco
 
@@ -54,4 +56,3 @@ docker-logs: ## Follow unified Docker container logs in real time
 
 docker-rebuild: ## Tear down, rebuild Docker images, and launch stack
 	docker compose down && docker compose up -d --build
-EOF
