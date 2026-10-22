@@ -1,25 +1,32 @@
 spring:
   application:
     name: digital-wallet-api
+
   datasource:
-    url: ${DB_URL:jdbc:postgresql://localhost:5432/wallet_db}
-    driver-class-name: ${DB_DRIVER:org.postgresql.Driver}
-    username: ${DB_USERNAME:postgres}
-    password: ${DB_PASSWORD:postgres}
+    url: jdbc:postgresql://localhost:5432/wallet_db
+    username: postgres
+    password: password
+    driver-class-name: org.postgresql.Driver
+
   jpa:
     hibernate:
       ddl-auto: validate
     show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+
   flyway:
     enabled: true
 
-api:
-  security:
-    jwt:
-      secret: ${JWT_SECRET:chave-secreta-padrao-desenvolvimento-local-123456}
-      expiration: ${JWT_EXPIRATION:86400000}
-  client:
-    authorizer:
-      url: ${AUTHORIZER_URL:https://util.devi.tools/api/v2/authorize}
-    notification:
-      url: ${NOTIFICATION_URL:https://util.devi.tools/api/v1/notify}
+  # RabbitMQ Configuration (PR #3)
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
+  # MongoDB Configuration (PR #3)
+  data:
+    mongodb:
+    #   uri: mongodb://root:password@localhost:27017/wallet_audit?authSource=admin
