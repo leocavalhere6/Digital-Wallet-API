@@ -57,8 +57,8 @@ class TransferServiceTest {
                         BigDecimal.valueOf(50),
                         WalletType.USER);
 
-        when(walletRepository.findById(payerId)).thenReturn(Optional.of(payer));
-        when(walletRepository.findById(payeeId)).thenReturn(Optional.of(payee));
+        when(walletRepository.findByIdWithLock(payerId)).thenReturn(Optional.of(payer));
+        when(walletRepository.findByIdWithLock(payeeId)).thenReturn(Optional.of(payee));
         when(authorizerClient.isAuthorized()).thenReturn(true);
         doNothing().when(notificationClient).sendNotification(anyString(), anyString());
 
@@ -93,8 +93,8 @@ class TransferServiceTest {
                         BigDecimal.valueOf(50),
                         WalletType.USER);
 
-        when(walletRepository.findById(payerId)).thenReturn(Optional.of(merchantPayer));
-        when(walletRepository.findById(payeeId)).thenReturn(Optional.of(payee));
+        when(walletRepository.findByIdWithLock(payerId)).thenReturn(Optional.of(merchantPayer));
+        when(walletRepository.findByIdWithLock(payeeId)).thenReturn(Optional.of(payee));
 
         TransferRequest request = new TransferRequest(payerId, payeeId, BigDecimal.valueOf(100));
 
@@ -126,8 +126,8 @@ class TransferServiceTest {
                         BigDecimal.valueOf(50),
                         WalletType.USER);
 
-        when(walletRepository.findById(payerId)).thenReturn(Optional.of(payer));
-        when(walletRepository.findById(payeeId)).thenReturn(Optional.of(payee));
+        when(walletRepository.findByIdWithLock(payerId)).thenReturn(Optional.of(payer));
+        when(walletRepository.findByIdWithLock(payeeId)).thenReturn(Optional.of(payee));
 
         TransferRequest request = new TransferRequest(payerId, payeeId, BigDecimal.valueOf(100));
 
