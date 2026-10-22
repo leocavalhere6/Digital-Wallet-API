@@ -20,18 +20,18 @@ format: ## Apply Spotless code formatting
 format-check: ## Check code formatting compliance
 	./mvnw spotless:check
 
-test: db ## Apply formatting and execute unit/integration test suite
-	./mvnw spotless:apply && ./mvnw clean test
+test: db ## Execute unit/integration test suite
+	./mvnw clean test
 
 coverage: db ## Run tests and generate JaCoCo report in target/site/jacoco
-	./mvnw spotless:apply && ./mvnw clean test jacoco:report
+	./mvnw clean test jacoco:report
 	@echo "Report generated at: target/site/jacoco/index.html"
 
 coverage-view: coverage ## Run tests and launch local HTTP server on port 8000 to inspect JaCoCo report
 	python3 -m http.server 8000 --directory target/site/jacoco
 
-build: ## Format code and package application JAR (skipping tests)
-	./mvnw spotless:apply && ./mvnw clean package -DskipTests
+build: ## Package application JAR (skipping tests)
+	./mvnw clean package -DskipTests
 
 clean: ## Clean Maven target build folder
 	./mvnw clean
