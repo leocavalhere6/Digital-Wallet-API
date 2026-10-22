@@ -33,13 +33,14 @@ public class TransferService {
     public TransferResponse transfer(TransferRequest request) {
         Wallet payer =
                 walletRepository
-                        .findById(request.payerId())
+                        .findByIdWithLock(request.payerId())
                         .orElseThrow(() -> new WalletNotFoundException("Payer wallet not found"));
 
         Wallet payee =
                 walletRepository
-                        .findById(request.payeeId())
+                        .findByIdWithLock(request.payeeId())
                         .orElseThrow(() -> new WalletNotFoundException("Payee wallet not found"));
+
         if (!payer.canTransfer()) {
             throw new TransferNotAllowedException(
                     "Merchant wallets are not allowed to send transfers");
